@@ -69,7 +69,7 @@ public class CommandLine {
 
     return usedFlags
   }
-  public var helpOption: BoolOption? = nil
+  private var _helpOption: BoolOption? = nil
   public var description: String = ""
 
   /**
@@ -244,11 +244,11 @@ public class CommandLine {
   */
   public func addHelp(option: BoolOption? = nil) {
     if option != nil {
-      helpOption = option!
+      _helpOption = option!
     }
 
-    helpOption = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "show this help message and exit")
-    addOption(helpOption!)
+    _helpOption = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "show this help message and exit")
+    addOption(_helpOption!)
   }
 
   /**
@@ -398,7 +398,7 @@ public class CommandLine {
     }
 
     /* Check to see if either help flag was given, if helpOption was set */
-    if let _ = helpOption?.value {
+    if let _ = _helpOption?.value {
       throw ParseError.HelpOption(description)
     }
 
