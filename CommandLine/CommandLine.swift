@@ -69,7 +69,8 @@ public class CommandLine {
 
     return usedFlags
   }
-  public var helpOption: BoolOption?
+  public var helpOption: BoolOption? = nil
+  public var description: String = ""
 
   /**
    * After calling `parse()`, this property will contain any values that weren't captured
@@ -165,6 +166,9 @@ public class CommandLine {
     
     /** Thrown if an Option with required: true is missing */
     case MissingRequiredOptions([Option])
+
+    /** Thrown if `CommandLine.helpOption.value` is `true` */
+    case HelpOption(String)
     
     public var description: String {
       switch self {
@@ -175,6 +179,8 @@ public class CommandLine {
         return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
       case let .MissingRequiredOptions(opts):
         return "Missing required options: \(opts.map { return $0.flagDescription })"
+      case let .HelpOption(description):
+        return description
       }
     }
   }
@@ -389,6 +395,11 @@ public class CommandLine {
       guard !strict || flagMatched else {
         throw ParseError.InvalidArgument(arg)
       }
+    }
+
+    /* Check to see if either help flag was given, if helpOption was set */
+    if let _ = helpOption?.value {
+      throw ParseError.HelpOption(description)
     }
 
     /* Check to see if any required options were not matched */
