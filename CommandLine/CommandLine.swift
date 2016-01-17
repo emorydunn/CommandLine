@@ -69,6 +69,7 @@ public class CommandLine {
 
     return usedFlags
   }
+  public var helpOption: BoolOption?
 
   /**
    * After calling `parse()`, this property will contain any values that weren't captured
@@ -220,7 +221,30 @@ public class CommandLine {
     
     return args
   }
-  
+
+  /**
+   * Adds a premade help option to the command line.
+   *
+   * This option is made available via the optional `CommandLine.helpOption`
+   *
+   * The default help option is a `BoolOption`:
+   *   - shortFlag: h
+   *   - longFlag: help
+   *   - helpMessage: show this help message and exit
+   *
+   *
+   * - parameter option: override the premade option with your own
+   *
+  */
+  public func addHelp(option: BoolOption? = nil) {
+    if option != nil {
+      helpOption = option!
+    }
+
+    helpOption = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "show this help message and exit")
+    addOption(helpOption!)
+  }
+
   /**
    * Adds an Option to the command line.
    *
