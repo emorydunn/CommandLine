@@ -42,6 +42,7 @@ internal class CommandLineTests: XCTestCase {
       ("testArgumentStopper", testArgumentStopper),
       ("testFlagStyles", testFlagStyles),
       ("testEmptyFlags", testEmptyFlags),
+      ("testHelpOption", testHelpOption),
       ("testDifferentCaseFlagReuse", testDifferentCaseFlagReuse),
       ("testMixedExample", testMixedExample),
       ("testWasSetProperty", testWasSetProperty),
@@ -544,6 +545,18 @@ internal class CommandLineTests: XCTestCase {
       XCTFail("Failed to parse empty flags: \(error)")
     }
   }
+
+    func testHelpOption() {
+        let cli = CommandLine(arguments: ["--help"])
+
+        cli.addHelp()
+
+        do {
+            try cli.parse()
+            XCTFail("Help Test did not throw an error")
+        } catch { }
+
+    }
 
   /* These three tests should assert() in cli.addOption, but there's no clean way to test for
    * assertions in Swift 2, so they're commented out for now.
