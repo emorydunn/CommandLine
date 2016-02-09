@@ -398,8 +398,10 @@ public class CommandLine {
     }
 
     /* Check to see if either help flag was given, if helpOption was set */
-    if let _ = _helpOption?.value {
-      throw ParseError.HelpOption(description)
+    if let helpNeeded = _helpOption?.value {
+        if helpNeeded {
+            throw ParseError.HelpOption(description)
+        }
     }
 
     /* Check to see if any required options were not matched */
